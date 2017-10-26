@@ -16,3 +16,6 @@ input file needs to be shaped;
 .  
 lontitude0 and latitude0 are coordinates of the original point in an x-y plane.  
 
+#References
+Kirkpatrick, et al, 1983, Optimization by Simulated Annealing, *Science*, Vol.220, No. 4598. pp. 671-680.  
+David Bookstaber, 1997, Simulated Annealing for Traveling Salesman Problem, http://www.bookstaber.com/david/opinion/SATSP.pdf
