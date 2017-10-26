@@ -4,8 +4,8 @@ import math
 import time
 import sys
 
-def input_coordinates(showmap=False):
-    with open('prefs.out', 'r') as fin:
+def input_coordinates(filename, showmap=False):
+    with open(filename, 'r') as fin:
         X = []
         Y = []
         while True:
@@ -169,8 +169,9 @@ def showmap(path, X, Y):
             markersize=5, color='dimgray', lw=1)
 
 if __name__ == '__main__':
+    # this random seed provides better result
     np.random.seed(1000384)
-    X, Y = input_coordinates()
+    X, Y = input_coordinates("prefs.out")
     #init_path = greedy_tsp(X, Y)
     init_path = random_path(X, Y)
     plt.title('Annealing result')
