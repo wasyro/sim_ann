@@ -3,6 +3,7 @@ import numpy as np
 import math
 import time
 import sys
+from drawnow import drawnow
 
 def input_coordinates(filename, showmap=False):
     with open(filename, 'r') as fin:
@@ -107,7 +108,7 @@ def greedy_tsp(X, Y):
     return path
 
 def anneal(path, X, Y, n_iter=100000, pmelt=0.7, tgt=0.01, stagfactor=0.05,
-           procplt=False, color='dimgray', lw=2):
+           procplt=False, realtime=False, color='dimgray', lw=2):
     n_cities = len(path)
     initial_distance = calc_distance(path, X, Y)
     min_distance, max_distance = initial_distance, initial_distance
@@ -131,6 +132,9 @@ def anneal(path, X, Y, n_iter=100000, pmelt=0.7, tgt=0.01, stagfactor=0.05,
     path_ = np.copy(path)
 
     for i in range(1, n_iter):
+        if realtime:
+            drawnow(showmap, path=path_, X=X, Y=Y)
+
         sys.stdout.write('\r{} / {} processing...'.format(
                             i + 1, n_iter))
         sys.stdout.flush()
@@ -163,7 +167,7 @@ def showmap(path, X, Y):
     plt.xticks([])
     plt.yticks([])
     plt.plot(path_sorted_X, path_sorted_Y, marker='o',
-            markersize=5, color='dimgray', lw=1)
+            markersize=8, color='dimgray', lw=2)
 
 if __name__ == '__main__':
     # this random seed provides better result
@@ -171,26 +175,5 @@ if __name__ == '__main__':
     X, Y = input_coordinates("prefs.out")
     #init_path = greedy_tsp(X, Y)
     init_path = random_path(X, Y)
-    plt.title('Annealing result')
-    plt.xlabel('steps')
-    plt.ylabel('Tour length (m)')
     
-    path = anneal(init_path, X, Y, n_iter=100000, procplt=True)
-    plt.show()
-    plt.subplot(121)
-    plt.title('Initial(random) Route')
-    showmap(init_path, X, Y)
-    
-    plt.subplot(122)
-    plt.title('Optimized Route')
-    showmap(path, X, Y)
-    plt.show()
-
-    distance = calc_distance(path, X, Y)
-    print("distance: {}".format(distance))
-
-    with open('result', 'w') as fout:
-        fout.write('path\n')
-        for city in path:
-            fout.write(str(city) + '\n')
-        fout.write('')
+    path = anneal(init_path, X, Y, n_iter=100000, procplt=False, realtime=True)
