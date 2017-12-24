@@ -156,13 +156,12 @@ def anneal(path, X, Y, n_iter=100000, pmelt=0.7, tgt=0.01, stagfactor=0.05,
     return optimized_path
 
 def showmap(path, X, Y):
-    path_sorted_X = [X[city_num] for city_num in path]
-    path_sorted_Y = [Y[city_num] for city_num in path]
-    path_sorted_X.append(path_sorted_X[0])
-    path_sorted_Y.append(path_sorted_Y[0])
+    path_sorted_coords = [[X[city_num], Y[city_num]] for city_num in path]
+    path_sorted_coords.append(path_sorted_coords[0])
+    path_sorted_coords = np.asarray(path_sorted_coords).T
     plt.xticks([])
     plt.yticks([])
-    plt.plot(path_sorted_X, path_sorted_Y, marker='o',
+    plt.plot(path_sorted_coords[0], path_sorted_coords[1], marker='o',
             markersize=5, color='dimgray', lw=1)
 
 if __name__ == '__main__':
